@@ -6,7 +6,7 @@ use std::cmp;
 
 
 // Experimental game of life simulator by james
-// no tutorials used haha
+// no tutorials used
 
 type Matrix = HashMap<Cell, State>;
 
