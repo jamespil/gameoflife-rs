@@ -6,7 +6,7 @@ use std::cmp;
 
 
 // Experimental game of life simulator by james
-// no tutorials used haha
+// no tutorials used
 
 type Matrix = HashMap<Cell, State>;
 
@@ -55,35 +55,8 @@ fn main() {
 
     // for now, insert starting cells here
 
-    matrix.insert((14, 12), State::ALIVE);
-    matrix.insert((15, 12), State::ALIVE);
-    matrix.insert((16, 12), State::ALIVE);
-
-    matrix.insert((14, 13), State::ALIVE);
-    matrix.insert((16, 13), State::ALIVE);
-
-    matrix.insert((14, 14), State::ALIVE);
-    matrix.insert((15, 14), State::ALIVE);
-    matrix.insert((16, 14), State::ALIVE);
-
-    matrix.insert((14, 15), State::ALIVE);
-    matrix.insert((15, 15), State::ALIVE);
-    matrix.insert((16, 15), State::ALIVE);
-
-    matrix.insert((14, 16), State::ALIVE);
-    matrix.insert((15, 16), State::ALIVE);
-    matrix.insert((16, 16), State::ALIVE);
-
-    matrix.insert((14, 17), State::ALIVE);
-    matrix.insert((15, 17), State::ALIVE);
-    matrix.insert((16, 17), State::ALIVE);
-
-    matrix.insert((14, 18), State::ALIVE);
-    matrix.insert((16, 18), State::ALIVE);
-
-    matrix.insert((14, 19), State::ALIVE);
-    matrix.insert((15, 19), State::ALIVE);
-    matrix.insert((16, 19), State::ALIVE);
+    matrix.insert((31, 12), State::ALIVE);
+    matrix.insert((31, 13), State::ALIVE);
 
     // to here
 
@@ -93,8 +66,8 @@ fn main() {
     }
 }
 
-fn clamp<T: Ord>(n: T, min: T, max: T) -> T {
-    cmp::max(cmp::min(n, max), min)
+fn in_bounds<T: Ord>(n: T, min: T, max: T) -> bool {
+    n <= max && n >= min
 }
 
 fn get_alive_neighbors(matrix: &mut Matrix, cell: Cell) -> u8 {
@@ -102,7 +75,10 @@ fn get_alive_neighbors(matrix: &mut Matrix, cell: Cell) -> u8 {
 
     for y in -1..2 {
         for x in -1..2 {
-            if (x, y) != (0, 0) && matrix[&(clamp(cell.0 as i8 + x, 0, 31) as u8, clamp(cell.1 as i8 + y, 0, 31) as u8)] == State::ALIVE {
+            let neighbor_x = (cell.0 as i8 + x) as u8;
+            let neighbor_y = (cell.1 as i8 + y) as u8;
+            if in_bounds(neighbor_x, 0, 31) && in_bounds(neighbor_y, 0, 31)
+            && (x, y) != (0, 0) && matrix[&(neighbor_x, neighbor_y)] == State::ALIVE {
                 alive += 1;
             }
         }
